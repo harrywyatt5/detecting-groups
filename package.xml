@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>detecting-groups</name>
+  <name>detecting_groups</name>
   <version>0.0.1</version>
   <description>TODO: Package description</description>
   <maintainer email="WyattH4@cardiff.ac.uk">Harry Wyatt</maintainer>
@@ -11,6 +11,7 @@
 
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
+  <depend>detecting_groups_custom_msg</depend>
   <depend>ament_index_cpp</depend>
   <depend>isaac_ros_managed_nitros</depend>
   <depend>isaac_ros_nitros_image_type</depend>

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(detecting-groups LANGUAGES CXX CUDA)
+project(detecting_groups LANGUAGES CXX CUDA)
 find_package(ament_cmake REQUIRED)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -18,6 +18,7 @@ endif()
 # Collect cpp files and target them for compilation, then add our headers
 set(SOURCES
 	src/main.cpp
+	src/DetectingGroupsNode.cpp
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -27,6 +28,7 @@ find_package(OpenCV 4 REQUIRED HINTS "/opt/cudaopencv")
 find_package(CUDAToolkit REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(detecting_groups_custom_msg REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(isaac_ros_managed_nitros REQUIRED)
 find_package(isaac_ros_nitros_image_type REQUIRED)
@@ -41,13 +43,14 @@ target_link_libraries(${PROJECT_NAME}
 ament_target_dependencies(${PROJECT_NAME}
 	rclcpp
 	std_msgs
+	detecting_groups_custom_msg
 	ament_index_cpp
 	isaac_ros_managed_nitros
 	isaac_ros_nitros_image_type
 )
 
 install(TARGETS
-	detecting-groups
+	detecting_groups
 	DESTINATION lib/${PROJECT_NAME}
 )
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/gemma-model"
