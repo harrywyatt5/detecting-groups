@@ -19,6 +19,7 @@ endif()
 set(SOURCES
 	src/main.cpp
 	src/DetectingGroupsNode.cpp
+	src/InputImageHandler.cpp
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -32,11 +33,14 @@ find_package(detecting_groups_custom_msg REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(isaac_ros_managed_nitros REQUIRED)
 find_package(isaac_ros_nitros_image_type REQUIRED)
+find_package(llama REQUIRED)
 
 # Link standard CMAKE libs
 target_link_libraries(${PROJECT_NAME}
 	${OpenCV_LIBS}
 	CUDA::cudart
+	llama
+	mtmd
 )
 
 # Link special ROS2 libs
