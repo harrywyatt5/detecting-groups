@@ -21,6 +21,12 @@ set(SOURCES
 	src/DetectingGroupsNode.cpp
 	src/InputImageHandler.cpp
 	src/Tokenizer.cpp
+	src/SystemPrompt.cpp
+	src/UserPrompt.cpp
+	src/MixedUserPrompt.cpp
+	src/ModelPrompt.cpp
+	src/GemmaModelProvider.cpp
+	src/PromptFromFileFactory.cpp
 )
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")

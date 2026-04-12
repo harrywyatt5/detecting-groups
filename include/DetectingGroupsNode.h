@@ -1,5 +1,8 @@
 #pragma once
 
+#include "GemmaModelProvider.h"
+#include "InputImageHandler.h"
+#include "SystemPrompt.h"
 #include <rclcpp/rclcpp.hpp>
 #include <isaac_ros_managed_nitros/managed_nitros_publisher.hpp>
 #include <isaac_ros_managed_nitros/managed_nitros_subscriber.hpp>
@@ -11,6 +14,10 @@ namespace nitros = nvidia::isaac_ros::nitros;
 
 class DetectingGroupsNode : public rclcpp::Node {
 private:
+    rclcpp::Time lastProcessedFrame;
+    double processingPeriod;
+    InputImageHandler inputHandler;
+    std::unique_ptr<GemmaModelProvider> modelProvider;
     std::shared_ptr<nitros::ManagedNitrosSubscriber<nitros::NitrosImageView>> maskedImageSub;
     rclcpp::Publisher<detecting_groups_custom_msg::msg::PresentGroups>::SharedPtr groupsPub;
 public:

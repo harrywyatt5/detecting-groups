@@ -4,11 +4,6 @@
 
 class Prompt {
 public:
-    enum class PromptType {
-        SYSTEM,
-        USER
-    };
-
-    virtual std::string getPrompt() const = 0;
+    virtual const std::string& getPrompt() const = 0;
     virtual ~Prompt() = default;
 };

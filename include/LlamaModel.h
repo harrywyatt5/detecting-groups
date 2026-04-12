@@ -26,7 +26,7 @@ public:
 
     ~LlamaModel() {
         if (model != nullptr) {
-            llama_free_model(model);
+            llama_model_free(model);
             model = nullptr;
         }
     }

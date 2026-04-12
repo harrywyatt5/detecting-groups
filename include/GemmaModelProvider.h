@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Prompt.h"
 #include "Tokenizer.h"
+#include "LlamaModel.h"
 #include "LlamaContext.h"
 #include <llama.h>
 #include <mtmd.h>
@@ -9,10 +11,16 @@
 
 class GemmaModelProvider {
 private:
-    llama_model* model;
+    std::shared_ptr<LlamaModel> model;
     std::shared_ptr<LlamaContext> context;
-    Tokenizer tokenizer;
-    const llama_vocab* vocab;
+    // Probably should be inline, but we wanna generate model and ocntext before the tokenizer...
+    std::unique_ptr<Tokenizer> tokenizer;
 public:
-    GemmaModelProvider(const std::string& modelPath, const std::string& mmprojPath);
+    GemmaModelProvider(
+        const std::string& modelPath,
+        const std::string& mmprojPath,
+        const Prompt* systemPrompt
+    );
+
+    std::string processPrompt(const Prompt* prompt);
 };

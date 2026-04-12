@@ -1,6 +1,7 @@
 #pragma once
 
 #include <llama.h>
+#include <stdexcept>
 
 class LlamaContext {
 private:
@@ -8,6 +9,10 @@ private:
 public:
     LlamaContext(llama_model* model, const llama_context_params& params) {
         context = llama_init_from_model(model, params);
+
+        if (!context) {
+            throw std::runtime_error("Failed to initial LlamaContext");
+        }
     }
 
     llama_context* ptr() {
