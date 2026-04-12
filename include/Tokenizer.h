@@ -1,5 +1,6 @@
 #pragma once
 
+#include "LlamaBackendSingleton.h"
 #include "LlamaContext.h"
 #include "LlamaModel.h"
 #include "Prompt.h"
@@ -12,6 +13,7 @@
 
 class Tokenizer {
 private:
+    std::shared_ptr<LlamaBackendSingleton> backend;
     std::shared_ptr<LlamaModel> model;
     std::shared_ptr<LlamaContext> context;
     std::unique_ptr<ModelPrompt> modelPrompt;

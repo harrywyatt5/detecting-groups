@@ -24,6 +24,10 @@ public:
         return model;
     }
 
+    const llama_vocab* getLlamaVocabPtr() const {
+        return llama_model_get_vocab(model);
+    }
+
     ~LlamaModel() {
         if (model != nullptr) {
             llama_model_free(model);

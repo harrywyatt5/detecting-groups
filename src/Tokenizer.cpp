@@ -1,5 +1,6 @@
 #include "Tokenizer.h"
 
+#include "LlamaBackendSingleton.h"
 #include "LlamaContext.h"
 #include "LlamaModel.h"
 #include "Prompt.h"
@@ -20,7 +21,7 @@ Tokenizer::Tokenizer(
     const mtmd_context_params& params,
     std::shared_ptr<LlamaContext> contextPtr,
     std::shared_ptr<LlamaModel> modelPtr
-) : model(modelPtr), context(contextPtr), modelPrompt(std::make_unique<ModelPrompt>()), cachedSystemPromptEnd(0), resetCacheNextPrompt(false) {
+) : backend(LlamaBackendSingleton::getOrCreateInstance()), model(modelPtr), context(contextPtr), modelPrompt(std::make_unique<ModelPrompt>()), cachedSystemPromptEnd(0), resetCacheNextPrompt(false) {
     mtmdContext = mtmd_init_from_file(mmprojPath.c_str(), model->ptr(), params);
 
     if (!mtmdContext) {
