@@ -11,13 +11,31 @@
 using json = nlohmann::json;
 
 std::string TextOutput::WHITESPACE = " \n\r\t\f\v";
+std::string TextOutput::CHANNEL_START = "<|channel>";
+std::string TextOutput::CHANNEL_END = "<channel|>";
 
 std::string_view TextOutput::trimInternal() const {
-    size_t startPos = internal.find_first_not_of(WHITESPACE);
-    if (startPos == std::string::npos) return "";
+    // Cast to string view
+    std::string_view view(internal);
+    size_t startPos = view.find_first_not_of(WHITESPACE);
+    if (startPos == std::string_view::npos) return "";
 
-    size_t endPos = internal.find_last_not_of(WHITESPACE);
-    return internal.substr(startPos, endPos - startPos + 1);
+    size_t endPos = view.find_last_not_of(WHITESPACE);
+    return view.substr(startPos, endPos - startPos + 1);
+}
+
+std::string_view TextOutput::removeExternalChannels(std::string_view input) const {
+    auto pos = input.find(TextOutput::CHANNEL_START);
+    if (pos == std::string_view::npos) return input;
+
+    auto endPos = input.find(TextOutput::CHANNEL_END, pos);
+    if (endPos == std::string_view::npos) {
+        std::cerr << "Channel tag is never closed!\n";
+        return "";
+    }
+
+    auto startOfDataPos = endPos + TextOutput::CHANNEL_END.length();
+    return input.substr(startOfDataPos, input.length() - startOfDataPos);
 }
 
 const std::string& TextOutput::getRawString() const {
@@ -26,7 +44,7 @@ const std::string& TextOutput::getRawString() const {
 
 detecting_groups_custom_msg::msg::PresentGroups TextOutput::generateStructuredResponse() const {
     detecting_groups_custom_msg::msg::PresentGroups msg;
-    std::string_view trimmedInternalStr = trimInternal();
+    std::string_view trimmedInternalStr = removeExternalChannels(trimInternal());
 
     // Array to keep track of who we have seen in the JSON data already
     std::vector<int> accountedFor;
@@ -69,6 +87,7 @@ detecting_groups_custom_msg::msg::PresentGroups TextOutput::generateStructuredRe
         }
     } catch (const json::parse_error& e) {
         std::cerr << "Failed to parse LLM output. It's likely we got something invalid\n";
+        std::cerr << "DEBUG: Actual output from LLM was: " << internal << "\n";
     }
 
     return msg;

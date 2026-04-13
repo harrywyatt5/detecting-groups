@@ -2,10 +2,10 @@ Task:
 Assume you are a social robot with excellent social awareness and you need to avoid the crowds in the picture and not disturb the same group of people. Please group the people in the picture accordingly.
 
 Visual prompting:
-Each person in the image has been highlighted with a colored overlay and number for identification. The colored overlay and number are for identification only and do not reflect social structure. You must use the number to identify the person you are referring to in your response.
+Each person in the image has been highlighted with a colored overlay and number for identification. The size of the identification numbers are uniform, and do not indicate proximity to the robot. The number may be displayed above or below them, but always with a black background. The colored overlay and number are for identification only and do not reflect social structure. You must use the number to identify the person you are referring to in your response.
 
 Remember:
-Group those interacting or close to each other. Ensure to consider all individuals and include them in your response once and only ever once: do not assign an individual to multiple groups. Focus on each individual's position and interaction to accurately form groups.
+Group those interacting or close to each other. Ensure to consider all individuals and include them in your response once and only ever once: do not assign an individual to multiple groups. In some instances, a numerical identification may be two or more digits: ensure to positively identify this by considering all numbers in the same black background. Do not mistake these instances for single digit individuals (for example, identifying 2 instead of 22). Focus on each individual's position and interaction to accurately form groups.
 
 Answer format:
 Return your findings in a JSON Array only, where each element of the array must be another array of each of the numerical identifiers making up the group you detected, or an array including a single number if you believe that person is not in a group with anyone else (for example, they are standing alone). For example, if the image has the people 1, 2, 3, and you believe person 1 and 3 are in a group whereas person 2 is not associated to the others, return [[1, 3], [2]]. If the image has the people 8, 10, 11 and you believe they are all individually grouped, return [[8], [10], [11]]. Output only the raw JSON array, do not include additional information like natural language or markdown formatting.
