@@ -18,7 +18,7 @@ OutputDecoder::OutputDecoder(
     llama_sampler_chain_add(sampler, llama_sampler_init_greedy());
 }
 
-std::string OutputDecoder::sampleModelOutput(int maxTokens = 128) {
+std::string OutputDecoder::sampleModelOutput(int maxTokens) {
     llama_sampler_reset(sampler);
 
     std::string finalOutput;

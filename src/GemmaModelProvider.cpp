@@ -1,5 +1,6 @@
 #include "GemmaModelProvider.h"
 
+#include "TextOutput.h"
 #include "LlamaBackendSingleton.h"
 #include "LlamaModel.h"
 #include "OutputDecoder.h"
@@ -28,10 +29,10 @@ GemmaModelProvider::GemmaModelProvider(
     decoder = std::make_unique<OutputDecoder>(sampleParams, context, model);
 }
 
-std::string GemmaModelProvider::processPrompt(const Prompt* prompt) {
+TextOutput GemmaModelProvider::processPrompt(const Prompt* prompt) {
     tokenizer->registerAdditionalPrompts(prompt);
     tokenizer->terminatePrompt();
 
-    return decoder->sampleModelOutput();
+    return TextOutput(decoder->sampleModelOutput());
 }
 

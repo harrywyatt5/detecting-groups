@@ -15,7 +15,7 @@ LlamaBackendSingleton::~LlamaBackendSingleton() {
 
 std::shared_ptr<LlamaBackendSingleton> LlamaBackendSingleton::getOrCreateInstance() {
     if (instance == nullptr) {
-        instance = std::make_shared<LlamaBackendSingleton>();
+        instance = std::shared_ptr<LlamaBackendSingleton>(new LlamaBackendSingleton());
     }
 
     return instance;

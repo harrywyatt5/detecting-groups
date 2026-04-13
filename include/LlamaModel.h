@@ -28,6 +28,9 @@ public:
         return llama_model_get_vocab(model);
     }
 
+    LlamaModel(const LlamaModel&) = delete;
+    LlamaModel& operator=(const LlamaModel&) = delete;
+
     ~LlamaModel() {
         if (model != nullptr) {
             llama_model_free(model);

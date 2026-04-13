@@ -22,5 +22,7 @@ public:
     );
 
     std::string sampleModelOutput(int maxTokens = 128);
+    OutputDecoder(const OutputDecoder&) = delete;
+    OutputDecoder& operator=(const OutputDecoder&) = delete;
     ~OutputDecoder();
 };

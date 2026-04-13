@@ -1,5 +1,6 @@
 #pragma once
 
+#include "TextOutput.h"
 #include "LlamaBackendSingleton.h"
 #include "OutputDecoder.h"
 #include "Prompt.h"
@@ -26,5 +27,5 @@ public:
         const Prompt* systemPrompt
     );
 
-    std::string processPrompt(const Prompt* prompt);
+    TextOutput processPrompt(const Prompt* prompt);
 };

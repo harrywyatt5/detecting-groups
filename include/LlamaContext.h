@@ -23,6 +23,9 @@ public:
         return context;
     }
 
+    LlamaContext(const LlamaContext&) = delete;
+    LlamaContext& operator=(const LlamaContext&) = delete;
+
     ~LlamaContext() {
         if (context != nullptr) {
             llama_free(context);

@@ -33,5 +33,7 @@ public:
     void registerAdditionalPrompts(const Prompt* prompt);
     void terminatePrompt();
 
+    Tokenizer(const Tokenizer&) = delete;
+    Tokenizer& operator=(const Tokenizer&) = delete;
     ~Tokenizer();
 };

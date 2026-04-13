@@ -6,9 +6,9 @@
 class LlamaBackendSingleton {
 private:
     LlamaBackendSingleton();
-    ~LlamaBackendSingleton();
 
     static std::shared_ptr<LlamaBackendSingleton> instance;
 public:
+    ~LlamaBackendSingleton();
     static std::shared_ptr<LlamaBackendSingleton> getOrCreateInstance();
 };
