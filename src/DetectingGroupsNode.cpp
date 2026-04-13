@@ -57,6 +57,8 @@ void DetectingGroupsNode::maskedImageCallback(const nitros::NitrosImageView& ima
         return;
     }
 
+    lastProcessedFrame = imageTime;
+
     // Copy across image to input and then get a bitmap of it which we can use for the next input
     // Unfortunately, we have to create MixedUserPrompt on the heap due to polymorphism in C++
     inputHandler.uploadMessage(imageView);
