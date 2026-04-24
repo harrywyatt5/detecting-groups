@@ -9,6 +9,7 @@
 #include <ament_index_cpp/get_package_share_directory.hpp>
 #include <detecting_groups_custom_msg/msg/present_groups.hpp>
 #include <string>
+#include <chrono>
 
 DetectingGroupsNode::DetectingGroupsNode() : lastProcessedFrame(rclcpp::Time(0, 0)), Node("detecting_groups_node") {
     auto shareDir = ament_index_cpp::get_package_share_directory("detecting_groups");
@@ -58,6 +59,8 @@ void DetectingGroupsNode::maskedImageCallback(const nitros::NitrosImageView& ima
         return;
     }
 
+    auto start_time = std::chrono::steady_clock::now();
+
     lastProcessedFrame = imageTime;
 
     // Copy across image to input and then get a bitmap of it which we can use for the next input
@@ -72,4 +75,8 @@ void DetectingGroupsNode::maskedImageCallback(const nitros::NitrosImageView& ima
     responseMsg.header = header;
     responseMsg.original_frame_time = lastProcessedFrame;
     groupsPub->publish(responseMsg);
+
+    auto end_time = std::chrono::steady_clock::now();
+    auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+    RCLCPP_INFO(this->get_logger(), "Frame time: %ldms", static_cast<long>(duration_ms));
 }
