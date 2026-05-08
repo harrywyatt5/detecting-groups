@@ -9,12 +9,13 @@
 #include <isaac_ros_nitros_image_type/nitros_image_view.hpp>
 #include <detecting_groups_custom_msg/msg/present_groups.hpp>
 #include <memory>
+#include <chrono>
 
 namespace nitros = nvidia::isaac_ros::nitros;
 
 class DetectingGroupsNode : public rclcpp::Node {
 private:
-    rclcpp::Time lastProcessedFrame;
+    std::chrono::steady_clock::time_point lastProcessedFrame;
     double processingPeriod;
     InputImageHandler inputHandler;
     std::unique_ptr<GemmaModelProvider> modelProvider;

@@ -11,7 +11,7 @@
 #include <string>
 #include <chrono>
 
-DetectingGroupsNode::DetectingGroupsNode() : lastProcessedFrame(rclcpp::Time(0, 0)), Node("detecting_groups_node") {
+DetectingGroupsNode::DetectingGroupsNode() : lastProcessedFrame(std::chrono::steady_clock::now() - std::chrono::seconds(100)), Node("detecting_groups_node") {
     auto shareDir = ament_index_cpp::get_package_share_directory("detecting_groups");
 
     this->declare_parameter<std::string>("masked_image_topic", "/masked_image");
@@ -51,8 +51,8 @@ DetectingGroupsNode::DetectingGroupsNode() : lastProcessedFrame(rclcpp::Time(0, 
 }
 
 void DetectingGroupsNode::maskedImageCallback(const nitros::NitrosImageView& imageView) {
-    auto imageTime = rclcpp::Time(imageView.GetTimestampSeconds(), imageView.GetTimestampNanoseconds());
-    double delta = (imageTime - lastProcessedFrame).seconds();
+    auto now = std::chrono::steady_clock::now();
+    double delta = std::chrono::duration<double>(now - lastProcessedFrame).count();
 
     if (delta < processingPeriod) {
         // We haven't waited long enough, just return now
@@ -61,7 +61,7 @@ void DetectingGroupsNode::maskedImageCallback(const nitros::NitrosImageView& ima
 
     auto start_time = std::chrono::steady_clock::now();
 
-    lastProcessedFrame = imageTime;
+    lastProcessedFrame = now;
 
     // Copy across image to input and then get a bitmap of it which we can use for the next input
     // Unfortunately, we have to create MixedUserPrompt on the heap due to polymorphism in C++
@@ -73,7 +73,7 @@ void DetectingGroupsNode::maskedImageCallback(const nitros::NitrosImageView& ima
     std_msgs::msg::Header header;
     header.stamp = this->get_clock()->now();
     responseMsg.header = header;
-    responseMsg.original_frame_time = lastProcessedFrame;
+    responseMsg.original_frame_time = rclcpp::Time(imageView.GetTimestampSeconds(), imageView.GetTimestampNanoseconds());
     groupsPub->publish(responseMsg);
 
     auto end_time = std::chrono::steady_clock::now();
